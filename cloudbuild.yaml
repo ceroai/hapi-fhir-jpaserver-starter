@@ -2,17 +2,16 @@
 # custom HAPI FHIR server to Cloud Run.
 
 steps:
-  # Step 2: Build the custom Docker image.
+  # Step 1: Build the custom Docker image.
   - name: 'gcr.io/cloud-builders/docker'
     id: 'docker-build'
-    waitFor: ['maven-build'] # Wait for the Maven build to finish
     args:
       - 'build'
       - '--tag'
       - '${_REGISTRY_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_REGISTRY_REPOSITORY}/${_SERVICE_NAME}'
       - '.'
 
-  # Step 3: Push the Docker image to Google Artifact Registry.
+  # Step 2: Push the Docker image to Google Artifact Registry.
   - name: 'gcr.io/cloud-builders/docker'
     id: 'docker-push'
     waitFor: ['docker-build']
@@ -20,7 +19,7 @@ steps:
       - 'push'
       - '${_REGISTRY_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_REGISTRY_REPOSITORY}/${_SERVICE_NAME}'
 
-  # Step 4: Deploy the new image to Cloud Run.
+  # Step 3: Deploy the new image to Cloud Run.
   # This step takes the image we just pushed and deploys it as a new revision
   # of our Cloud Run service, applying all necessary configurations.
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
