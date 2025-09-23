@@ -2,17 +2,7 @@
 # custom HAPI FHIR server to Cloud Run.
 
 steps:
-  # Step 1: Build the Java application using a specific Maven version (3.9+).
-  # This is required by the project's build configuration (enforcer plugin).
-  # We use a standard Maven image from Docker Hub which Cloud Build can pull.
-  - name: 'maven:3.9-eclipse-temurin-17'
-    id: 'maven-build'
-    entrypoint: 'mvn'
-    args: ['clean', 'install', '-DskipTests']
-
   # Step 2: Build the custom Docker image.
-  # This step uses the application code and the .war file created by Maven
-  # in the previous step to build the final container image.
   - name: 'gcr.io/cloud-builders/docker'
     id: 'docker-build'
     waitFor: ['maven-build'] # Wait for the Maven build to finish
