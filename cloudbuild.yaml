@@ -2,11 +2,10 @@
 # custom HAPI FHIR server to Cloud Run.
 
 steps:
-  # Step 1: Build the Java application using Maven.
-  # This step is crucial because it packages your application along with the
-  # required Cloud SQL Socket Factory dependency into a .war file.
-  # We use the official Maven cloud builder for this.
-  - name: 'gcr.io/cloud-builders/mvn'
+  # Step 1: Build the Java application using a specific Maven version (3.9+).
+  # This is required by the project's build configuration (enforcer plugin).
+  # We use a standard Maven image from Docker Hub which Cloud Build can pull.
+  - name: 'maven:3.9-eclipse-temurin-17'
     id: 'maven-build'
     entrypoint: 'mvn'
     args: ['clean', 'install', '-DskipTests']
@@ -48,6 +47,9 @@ steps:
       - '${_REGION}'
       - '--platform'
       - 'managed'
+      - --service-account
+      - $_SERVICE_ACCOUNT
+      # -- Secrets Configuration --
       # -- HAPI FHIR Specific Settings --
       - '--port=8080'
       - '--memory=4Gi'
@@ -56,7 +58,6 @@ steps:
       # -- Cloud SQL Connection --
       # The service account needs "Cloud SQL Client" role.
       - '--add-cloudsql-instances=${_INSTANCE_CONNECTION_NAME}'
-      # -- Secrets Configuration --
       # The service account needs "Secret Manager Secret Accessor" role.
       # Mount the 'hapi-application-yaml' secret as a volume at the /configs path.
       - '--update-secrets=/configs/hapi.application.yaml=hapi-application-yaml:latest'
