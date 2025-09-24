@@ -36,6 +36,10 @@ steps:
       - '${_REGION}'
       - '--platform'
       - 'managed'
+      - --vpc-connector
+      - $_VPC_CONNECTOR
+      - --vpc-egress
+      - all-traffic
       - --service-account
       - $_SERVICE_ACCOUNT
       # -- Secrets Configuration --
@@ -68,3 +72,4 @@ substitutions:
   _SERVICE_NAME: 'hapi-fhir-server'
   _INSTANCE_CONNECTION_NAME: 'ceroai:southamerica-west1:integracion-rayen-avis'
   _SPRING_DATASOURCE_DRIVERCLASSNAME: 'org.postgresql.Driver'
+  _VPC_CONNECTOR: vpc-connector-rayen
