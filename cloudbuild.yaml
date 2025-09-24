@@ -42,17 +42,16 @@ steps:
       # -- HAPI FHIR Specific Settings --
       - '--port=8080'
       - '--memory=4Gi'
-      - '--cpu=2'
+      - '--cpu=4000m'
       - '--timeout=900s' # Increase timeout for a large application
       # -- Cloud SQL Connection --
       # The service account needs "Cloud SQL Client" role.
       - '--add-cloudsql-instances=${_INSTANCE_CONNECTION_NAME}'
-      # The service account needs "Secret Manager Secret Accessor" role.
-      # Mount the 'hapi-application-yaml' secret as a volume at the /configs path.
-      - '--update-secrets=/configs/hapi.application.yaml=hapi-application-yaml:latest'
       # -- Environment Variables --
-      # This is the critical variable that tells Tomcat/HAPI where to find the mounted config file.
-      - '--set-env-vars=CATALINA_OPTS=-Dspring.config.location=file:///configs/hapi.application.yaml'
+      - '--set-env-vars=SPRING_DATASOURCE_URL=${_SPRING_DATASOURCE_URL}'
+      - '--set-env-vars=SPRING_DATASOURCE_USERNAME=${_SPRING_DATASOURCE_USERNAME}'
+      - '--set-env-vars=SPRING_DATASOURCE_PASSWORD=${_SPRING_DATASOURCE_PASSWORD}'
+      - '--set-env-vars=SPRING_DATASOURCE_DRIVERCLASSNAME=${_SPRING_DATASOURCE_DRIVERCLASSNAME}'
 
 # This specifies which image was built, allowing it to be seen in the build summary.
 images:
@@ -68,3 +67,4 @@ substitutions:
   _REGION: 'southamerica-west1'
   _SERVICE_NAME: 'hapi-fhir-server'
   _INSTANCE_CONNECTION_NAME: 'ceroai:southamerica-west1:integracion-rayen-avis'
+  _SPRING_DATASOURCE_DRIVERCLASSNAME: 'org.postgresql.Driver'

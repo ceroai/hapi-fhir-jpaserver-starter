@@ -118,7 +118,7 @@ spring:
     properties:
       hibernate:
         hbm2ddl:
-          auto: update
+          auto: validate
         jdbc:
           batch_size: 20
         cache:
@@ -131,9 +131,9 @@ spring:
         #If using H2, then supply the value of ca.uhn.fhir.jpa.model.dialect.HapiFhirH2Dialect
         #If using postgres, then supply the value of ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgresDialect
         #dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgresDialect
-        dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirH2Dialect
+        dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgresDialect
         search:
-          enabled: true
+          enabled: false
           schema_management:
             strategy: create
           ### lucene parameters
