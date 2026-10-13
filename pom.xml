@@ -7,6 +7,7 @@
         <java.version>17</java.version>
         <hapi.fhir.jpa.server.starter.revision>3</hapi.fhir.jpa.server.starter.revision>
         <clinical-reasoning.version>3.26.0</clinical-reasoning.version>
+        <micrometer.version>1.15.12</micrometer.version>
     </properties>
 
     <!-- one-liner to take you to the cloud with settings form the application.yaml file: -->
@@ -54,6 +55,14 @@
                <groupId>org.glassfish.jaxb</groupId>
                <artifactId>jaxb-runtime</artifactId>
                <version>2.3.8</version>
+           </dependency>
+           <!-- Alinea todos los modulos de micrometer (incluidos los transitivos de actuator) a una version sin CVE-2026-40984 -->
+           <dependency>
+               <groupId>io.micrometer</groupId>
+               <artifactId>micrometer-bom</artifactId>
+               <version>${micrometer.version}</version>
+               <type>pom</type>
+               <scope>import</scope>
            </dependency>
        </dependencies>
     </dependencyManagement>
@@ -364,21 +373,21 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
-            <version>1.13.3</version>
+            <version>${micrometer.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>1.13.3</version>
+            <version>${micrometer.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus-simpleclient -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus-simpleclient</artifactId>
-            <version>1.13.3</version>
+            <version>${micrometer.version}</version>
         </dependency>
 
 
